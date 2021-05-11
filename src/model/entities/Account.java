@@ -1,5 +1,7 @@
 package model.entities;
 
+import model.exceptions.DomainException;
+
 public class Account {
 	private Integer number;
 	private String holder;
@@ -51,17 +53,17 @@ public class Account {
 	}
 	
 	public void withdraw(double amount) {
+		validateWithdraw(amount);
 		balance -= amount;
 	}
 	
-	public String validateWithdraw(double amount) {
+	private void validateWithdraw(double amount) {
 		if (amount > getWithdrawLimit()) {
-			return "Erro de saque: A quantia excede o limite de saque";
+			throw new DomainException("Erro de saque: A quantia excede o limite de saque");
 		}
 		if (amount > getBalance()) {
-			return "Erro de saque: Saldo insuficiente!";
+			throw new DomainException ("Erro de saque: Saldo insuficiente!");
 		}
-		return null;
 	}
 	
 }
